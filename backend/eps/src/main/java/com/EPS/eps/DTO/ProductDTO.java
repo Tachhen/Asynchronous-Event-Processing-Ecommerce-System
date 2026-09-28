@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+//When Adding a new Product to products table
 @Setter 
 @Getter 
 @AllArgsConstructor 

@@ -8,12 +8,13 @@ import java.util.*;
 
 import com.EPS.eps.Entity.OrderStatus;
 
+
+//what we send the user when order is created 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
-
     private Long id;
     private BigDecimal totalAmount;
     private OrderStatus status;
