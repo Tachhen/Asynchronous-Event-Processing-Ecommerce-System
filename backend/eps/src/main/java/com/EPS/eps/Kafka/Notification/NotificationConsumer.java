@@ -1,21 +1,23 @@
 package com.EPS.eps.Kafka.Notification;
 
+import com.EPS.eps.DTO.Event.PaymentSuccessfulEvent;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import com.EPS.eps.DTO.Event.OrderCreatedEvent;
-
 @Service
 public class NotificationConsumer {
-    @KafkaListener (
-        topics="orders",
-        groupId="notification-group"
+
+    @KafkaListener(
+            topics = "payment-successful",
+            groupId = "notification-group"
     )
-    public void sendNotification(OrderCreatedEvent event) {
+    public void sendNotification(PaymentSuccessfulEvent event) {
 
         System.out.println(
-            "Sending notification for order: "
-            + event.getOrderId()
+                "Payment notification sent for order: "
+                        + event.getOrderId()
+                        + " | Amount: "
+                        + event.getAmount()
         );
     }
 }

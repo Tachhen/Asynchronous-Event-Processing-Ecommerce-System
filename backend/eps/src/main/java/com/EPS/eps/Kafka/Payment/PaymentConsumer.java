@@ -1,9 +1,12 @@
 package com.EPS.eps.Kafka.Payment;
 
+import java.time.LocalDateTime;
+
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.EPS.eps.DTO.Event.OrderCreatedEvent;
+import com.EPS.eps.DTO.Event.PaymentSuccessfulEvent;
 import com.EPS.eps.Entity.Payment;
 import com.EPS.eps.Entity.PaymentStatus;
 import com.EPS.eps.Repository.PaymentRepository;
@@ -14,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor 
 public class PaymentConsumer {
     private final PaymentRepository paymentRepository;
+    private final PaymentProducer paymentProducer;
     @KafkaListener(
         topics="orders",
         groupId="payment-group"
@@ -29,7 +33,9 @@ public class PaymentConsumer {
         payment.setOrderId(orderId);
         payment.setAmount(event.getTotalAmount());
         payment.setStatus(PaymentStatus.SUCCESS);
+        payment.setCreatedAt(LocalDateTime.now());
         paymentRepository.save(payment);
         System.out.println("Payment Successful For Order: "+orderId);
+        paymentProducer.sendPaymentSuccessful(new PaymentSuccessfulEvent(orderId,event.getTotalAmount()));
     }
 }
