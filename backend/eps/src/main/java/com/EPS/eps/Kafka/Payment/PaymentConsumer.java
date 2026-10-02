@@ -6,6 +6,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.EPS.eps.DTO.Event.OrderCreatedEvent;
+import com.EPS.eps.DTO.Event.PaymentCompleteEvent;
 import com.EPS.eps.DTO.Event.PaymentSuccessfulEvent;
 import com.EPS.eps.Entity.Order;
 import com.EPS.eps.Entity.OrderStatus;
@@ -28,7 +29,7 @@ public class PaymentConsumer {
         topics="payment-complete",
         groupId="payment-group"
     )    
-    public void processPayment(OrderCreatedEvent event){
+    public void processPayment(PaymentCompleteEvent event){
         Long orderId=event.getOrderId();
         Payment payment=paymentRepository.findByOrderId(orderId)
                         .orElseThrow(()->new RuntimeException("Payment Not Found"));
@@ -44,6 +45,6 @@ public class PaymentConsumer {
         order.setStatus(OrderStatus.PAID);
         orderRepository.save(order);
         System.out.println("Payment Successful For Order: "+orderId);
-        paymentProducer.sendPaymentSuccessful(new PaymentSuccessfulEvent(orderId,event.getTotalAmount()));
+        paymentProducer.sendPaymentSuccessful(new PaymentSuccessfulEvent(orderId,payment.getAmount()));
     }
 }

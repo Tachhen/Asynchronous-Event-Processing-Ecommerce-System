@@ -10,6 +10,7 @@ import com.EPS.eps.Entity.Order;
 import com.EPS.eps.Entity.OrderStatus;
 import com.EPS.eps.Service.OrderService;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
