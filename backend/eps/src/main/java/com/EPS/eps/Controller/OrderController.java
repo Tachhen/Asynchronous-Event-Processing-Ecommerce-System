@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.EPS.eps.DTO.CreateOrderRequest;
 import com.EPS.eps.DTO.OrderResponse;
 import com.EPS.eps.Entity.Order;
+import com.EPS.eps.Entity.OrderStatus;
 import com.EPS.eps.Service.OrderService;
 
 @RestController
@@ -28,5 +29,10 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @GetMapping("/status/{orderId}")
+    public ResponseEntity<OrderStatus>getOrderStatus(@PathVariable Long orderId){
+        return ResponseEntity.ok(orderService.getOrderStatus(orderId));
     }
 }

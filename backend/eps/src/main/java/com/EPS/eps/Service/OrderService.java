@@ -72,7 +72,7 @@ public class OrderService {
     }
 
     //response which we send back
-    private OrderResponse convertToResponse(Order order) {
+    public OrderResponse convertToResponse(Order order) {
         List<OrderItemResponse> items = order.getItems()
                 .stream()
                 .map(item -> new OrderItemResponse(
@@ -89,5 +89,11 @@ public class OrderService {
                 order.getCreatedAt(),
                 items
         );
+    }
+    //order Status
+    public OrderStatus getOrderStatus(Long orderId){
+        Order order=orderRepository.findById(orderId)
+                        .orElseThrow(()->new RuntimeException("Order not found"));
+        return order.getStatus();
     }
 }
