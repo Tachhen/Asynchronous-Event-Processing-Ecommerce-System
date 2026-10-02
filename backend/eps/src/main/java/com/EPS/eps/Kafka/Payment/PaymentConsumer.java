@@ -25,21 +25,19 @@ public class PaymentConsumer {
     private final PaymentProducer paymentProducer;
     private final OrderRepository orderRepository;
     @KafkaListener(
-        topics="orders",
+        topics="payment-complete",
         groupId="payment-group"
     )    
     public void processPayment(OrderCreatedEvent event){
         Long orderId=event.getOrderId();
-        if(paymentRepository.findByOrderId(orderId).isPresent()){
-            System.out.println("Payment already processed for order: "+orderId);
-            return;
+        Payment payment=paymentRepository.findByOrderId(orderId)
+                        .orElseThrow(()->new RuntimeException("Payment Not Found"));
+        if(payment.getStatus()==PaymentStatus.SUCCESS){
+            System.out.println("Payment already complete for order : "+orderId);
+            return ;
         }
-        System.out.println("Processing Payment for order : "+orderId+" amount: "+event.getTotalAmount());
-        Payment payment =new Payment();
-        payment.setOrderId(orderId);
-        payment.setAmount(event.getTotalAmount());
+        System.out.println("Processing Payment for order: "+orderId);
         payment.setStatus(PaymentStatus.SUCCESS);
-        payment.setCreatedAt(LocalDateTime.now());
         paymentRepository.save(payment);
         Order order=orderRepository.findById(orderId)
                     .orElseThrow(()->new RuntimeException("Order Not Found"));
