@@ -10,7 +10,10 @@ import com.EPS.eps.Entity.Order;
 import com.EPS.eps.Entity.OrderStatus;
 import com.EPS.eps.Service.OrderService;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://asynchronous-event-processing-ecomm.vercel.app"
+})
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {

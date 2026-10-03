@@ -2,7 +2,7 @@ import axios from "axios";
 import type { CreateOrderRequest, OrderResponse, OrderStatus } from "../types/order";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "https://asynchronous-event-processing-ecommerce.onrender.com/api",
 });
 
 export const createOrder = (data: CreateOrderRequest) =>

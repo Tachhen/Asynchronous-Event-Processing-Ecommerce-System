@@ -14,7 +14,10 @@ import com.EPS.eps.Service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
-
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://asynchronous-event-processing-ecomm.vercel.app"
+})
 @RestController 
 @RequiredArgsConstructor 
 @RequestMapping("/api/products")
